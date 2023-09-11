@@ -27,6 +27,29 @@ class HomeController extends Controller
 
     public function edit()
     {
-        return view('user.edit');
+        return view('user.profile');
+    }
+
+    public function update(Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            $user = Auth()->user();
+            $user->update($request->all());
+            \DB::commit();
+        } catch (\Exception $e) {
+            report($e);
+            \DB::rollback();
+            return redirect()->back()->with('fail', '編集に失敗しました');
+        }
+        return redirect()->route('profile.edit');
+
+        // $user = Auth()->user();
+        // dd($user);
+
+        // $user->name = $request->name;
+        // $user->email = $request->email;
+        // $user->password = $request->password;
+        // $user->save();
     }
 }
