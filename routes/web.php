@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,8 +23,14 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // ホーム
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    // Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::get('/profile', [App\Http\Controllers\HomeController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [App\Http\Controllers\HomeController::class, 'update'])->name('profile.update');
+    // プロフィール
+    Route::get('/profile', [HomeController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [HomeController::class, 'update'])->name('profile.update');
+
+    // 投稿
+    Route::resource('post', PostController::class);
 });
