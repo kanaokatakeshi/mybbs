@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->comment('投稿者');
             $table->string('title')->nullable()->comment('タイトル');
             $table->text('content')->nullable()->comment('本文');
-            $table->text('image')->comment('画像ファイルのパス');
+            $table->text('image')->nullable()->comment('画像ファイルのパス');
 
             $table->timestamps();
             $table->softDeletes();

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->comment('投稿者');
             $table->foreignId('post_id')->constrained()->cascadeOnDelete()->comment('投稿id');
-            $table->text('content')->comment('本文');
+            $table->text('content')->nullable()->comment('本文');
 
             $table->timestamps();
             $table->softDeletes();
