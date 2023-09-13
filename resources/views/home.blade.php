@@ -11,13 +11,15 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             <!-- 掲示板のタイトル -->
-                            <h5 class="card-title mt-1">{{ $post->title }}</h5>
+                            <h5 class="card-title mt-1"><a class="text-decoration-none"
+                                    href="{{ route('post.show', ['post' => $post->id]) }}">{{ $post->title }}</a></h5>
                             <!-- 投稿日時 -->
                             <small class="text-muted">投稿日時: {{ $post->created_at . ' @' . $post->user->name }}</small>
                         </div>
                         <div class="card-body">
                             <!-- 掲示板の内容 -->
                             <p class="card-text">{{ $post->content }}</p>
+                            <small class="text-muted">返信数: 0件</small>
                         </div>
                     </div>
                 @empty
