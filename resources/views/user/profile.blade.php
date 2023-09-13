@@ -5,23 +5,19 @@
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-md-4">
-                {{-- @forelse ($posts as $post)
-                @empty
-                @endforelse --}}
-
-                @for ($i = 0; $i < 10; $i++)
+                @forelse ($posts as $post)
                     <div class="card mb-4">
-                        <div class="card-header">{{ Auth::user()->name . '   投稿日時' }}</div>
+                        <div class="card-header">{{ $post->user->name . '   投稿日時' }}</div>
 
                         <div class="card-body">
                             <ul style="padding-left: 0; list-style: none;">
-                                <li>うおおおおおおおおおおおおおおお</li>
-                                <li>うおおおおおおおおおおおおおおお</li>
-                                <li>うおおおおおおおおおおおおおおお</li>
+                                <li>{{ $post->content }}</li>
                             </ul>
                         </div>
                     </div>
-                @endfor
+                @empty
+                @endforelse
+
             </div>
             <div class="col-md-4">
                 @for ($i = 0; $i < 10; $i++)
@@ -30,8 +26,6 @@
 
                         <div class="card-body">
                             <ul style="padding-left: 0; list-style: none;">
-                                <li>うおおおおおおおおおおおおおおお</li>
-                                <li>うおおおおおおおおおおおおおおお</li>
                                 <li>うおおおおおおおおおおおおおおお</li>
                             </ul>
                         </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -25,9 +27,18 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-        return view('user.profile');
+        $query = Post::query();
+
+        // dd($request->user());
+        if ($request->user()) {
+            $query->where('user_id', $request->user()->id);
+        }
+
+        $posts = $query->latest()->get();
+
+        return view('user.profile', compact('posts'));
     }
 
     public function update(Request $request)
