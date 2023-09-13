@@ -3,8 +3,43 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+        <div class="row justify-content-between">
+            <div class="col-md-4">
+                {{-- @forelse ($posts as $post)
+                @empty
+                @endforelse --}}
+
+                @for ($i = 0; $i < 10; $i++)
+                    <div class="card mb-4">
+                        <div class="card-header">{{ Auth::user()->name . '   投稿日時' }}</div>
+
+                        <div class="card-body">
+                            <ul style="padding-left: 0; list-style: none;">
+                                <li>うおおおおおおおおおおおおおおお</li>
+                                <li>うおおおおおおおおおおおおおおお</li>
+                                <li>うおおおおおおおおおおおおおおお</li>
+                            </ul>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+            <div class="col-md-4">
+                @for ($i = 0; $i < 10; $i++)
+                    <div class="card mb-4">
+                        <div class="card-header">{{ __('コメント') }}</div>
+
+                        <div class="card-body">
+                            <ul style="padding-left: 0; list-style: none;">
+                                <li>うおおおおおおおおおおおおおおお</li>
+                                <li>うおおおおおおおおおおおおおおお</li>
+                                <li>うおおおおおおおおおおおおおおお</li>
+                            </ul>
+                        </div>
+                    </div>
+                @endfor
+
+            </div>
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">{{ __('ユーザー情報の編集') }}</div>
 
@@ -14,7 +49,8 @@
                             @method('PUT')
 
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                                <label for="name"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="name" type="text"

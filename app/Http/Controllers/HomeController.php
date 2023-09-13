@@ -43,13 +43,5 @@ class HomeController extends Controller
             return redirect()->back()->with('fail', '編集に失敗しました');
         }
         return redirect()->route('profile.edit');
-
-        // $user = Auth()->user();
-        // dd($user);
-
-        // $user->name = $request->name;
-        // $user->email = $request->email;
-        // $user->password = $request->password;
-        // $user->save();
     }
 }
