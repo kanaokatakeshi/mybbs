@@ -24,7 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $query = Post::query();
+        $posts = $query->latest()->paginate(10);
+
+        return view('home', compact('posts'));
     }
 
     public function edit(Request $request)

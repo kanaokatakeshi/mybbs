@@ -4,21 +4,27 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-between">
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 @forelse ($posts as $post)
                     <div class="card mb-4">
-                        <div class="card-header">{{ $post->user->name . '   投稿日時' }}</div>
-
+                        <div class="card-header">
+                            <!-- 掲示板のタイトル -->
+                            <h5 class="card-title mt-1">{{ $post->title }}</h5>
+                            <!-- 投稿日時 -->
+                            <small class="text-muted">投稿日時: {{ $post->created_at . ' @' . $post->user->name }}</small>
+                        </div>
                         <div class="card-body">
-                            <ul style="padding-left: 0; list-style: none;">
-                                <li>{{ $post->content }}</li>
-                            </ul>
+                            <!-- 掲示板の内容 -->
+                            <p class="card-text">{{ $post->content }}</p>
                         </div>
                     </div>
                 @empty
+                    <tr>
+                        <td colspan="12">データがありません</td>
+                    </tr>
                 @endforelse
-
             </div>
+            {{-- ここは後でちゃんとする --}}
             <div class="col-md-4">
                 @for ($i = 0; $i < 10; $i++)
                     <div class="card mb-4">
@@ -31,7 +37,6 @@
                         </div>
                     </div>
                 @endfor
-
             </div>
             <div class="col-md-4">
                 <div class="card">
