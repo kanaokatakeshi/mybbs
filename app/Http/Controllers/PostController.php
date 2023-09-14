@@ -6,6 +6,9 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class PostController extends Controller
 {
@@ -32,31 +35,27 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         \DB::beginTransaction();
-        try {
-            $user = $request->user();
-            // dd($user);
 
-            // 画像アップロード処理
+        try {
+            $user = Auth::user(); // ユーザーを認証済みのユーザーから取得
+
+            $data = $request->validated(); // バリデーション済みのデータを取得
+
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->storeAs('public/images', $imageName);
-            } else {
-                $imageName = null; // 画像がアップロードされなかった場合
+                $data['image'] = $imageName; // 画像がアップロードされた場合、データに画像名を追加
             }
-            // 投稿をデータベースに保存
-            $post = $user->posts()->create($request->all());
-            // $post->title = $request->input('title');
-            // $post->content = $request->input('content');
-            $post->image = $imageName;
-            $post->save();
 
-            \DB::commit();
+            $post = $user->posts()->create($data);
+
+            DB::commit();
+
             return redirect()->route('home')->with('success', '投稿が成功しました。');
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             report($e);
-            \DB::rollBack();
+            DB::rollBack();
             return redirect()->back()->with('error', '投稿に失敗しました。エラー: ' . $e->getMessage());
         }
     }
