@@ -24,7 +24,7 @@
                         <div class="card-body">
                             <!-- 掲示板の内容 -->
                             <p class="card-text">{{ $post->content }}</p>
-                            <small class="text-muted">返信数: 0件</small>
+                            <small class="text-muted">返信数: {{ isset($post->comments) ? "{$post->comments->count()} 件" : '0件' }}</small>
                         </div>
                     </div>
                 @empty
