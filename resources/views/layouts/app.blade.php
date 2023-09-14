@@ -15,6 +15,21 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            @if (session('success'))
+                <div class="alert alert-success ms-5 mt-2" role="alert">
+                    <strong>{{ session('success') }}</strong>
+                </div>
+            @endif
+            @if (session('warning'))
+                <div class="alert alert-warning ms-5 mt-2" role="alert">
+                    <strong>{!! session('warning') !!}</strong>
+                </div>
+            @endif
+            @if (session('fail'))
+                <div class="alert alert-danger ms-5 mt-2" role="alert">
+                    <strong>{!! session('fail') !!}</strong>
+                </div>
+            @endif
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}

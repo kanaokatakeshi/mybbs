@@ -17,7 +17,23 @@
                             <img src="{{ asset('storage/images/' . $post->image) }}" alt="{{ $post->title }}" width="600"
                                 height="500">
                         @endif
-                        <p class="card-text">{{ $post->content }}</p>
+                        <p class="mt-3">{{ $post->content }}</p>
+                        <span class="card-text">
+                            <a href="{{ route('home') }}" role="button" class="btn btn-outline-secondary me-2">戻る</a>
+                        </span>
+
+                        @if (Auth::user()->id === $post->user_id)
+                            <span class="">
+                                <a href="{{ route('post.edit', ['post' => $post->id]) }}" role="button"
+                                    class="btn btn-outline-secondary">編集</a>
+                            </span>
+                            <form method="POST" action="{{ route('post.destroy', ['post' => $post->id]) }}"
+                                class="float-end me-2" onsubmit="return confirm('本当に削除しますか？');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger">削除</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>

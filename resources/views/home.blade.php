@@ -13,10 +13,10 @@
                             <!-- 掲示板のタイトル -->
                             <h5 class="card-title mt-1"><a class="text-decoration-none"
                                     href="{{ route('post.show', ['post' => $post->id]) }}">
+                                    {{ $post->title }}
                                     @if ($post->image)
                                         <span class="text-primary">【画像あり】</span>
                                     @endif
-                                    {{ $post->title }}
                                 </a></h5>
                             <!-- 投稿日時 -->
                             <small class="text-muted">投稿日時: {{ $post->created_at . ' @' . $post->user->name }}</small>

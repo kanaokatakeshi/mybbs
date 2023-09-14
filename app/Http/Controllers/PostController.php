@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -49,14 +50,13 @@ class PostController extends Controller
             }
 
             $post = $user->posts()->create($data);
-
             DB::commit();
 
-            return redirect()->route('home')->with('success', '投稿が成功しました。');
+            return redirect()->route('home')->with('success', '投稿しました。');
         } catch (Exception $e) {
             report($e);
             DB::rollBack();
-            return redirect()->back()->with('error', '投稿に失敗しました。エラー: ' . $e->getMessage());
+            return redirect()->back()->with('fail', '投稿に失敗しました。エラー: ' . $e->getMessage());
         }
     }
 
@@ -73,24 +73,52 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Request $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('post.form', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $validatedData = $request->validated();
+
+            $post = Post::findOrFail($id);
+            $post->update([
+                'title' => $validatedData['title'],
+                'content' => $validatedData['content'],
+            ]);
+
+            DB::commit();
+            return redirect()->route('post.show', ['post' => $post->id])->with('success', '更新しました。');
+        } catch (\Exception $e) {
+            report($e);
+            \DB::rollback();
+            return redirect()->back()->with('fail', '編集に失敗しました');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $post = Post::findOrFail($id);
+            $post->delete();
+
+            \DB::commit();
+            return redirect()->route('home')->with('success', '削除しました');
+        } catch (\Exception $e) {
+            report($e);
+            \DB::rollBack();
+            return redirect()->back()->with('fail', '削除に失敗しました。エラー:' . $e->getMessage());
+        }
     }
 }
