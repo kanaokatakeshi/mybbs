@@ -4,40 +4,77 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-between">
+            {{-- 過去の投稿 --}}
             <div class="col-lg-4">
                 @forelse ($posts as $post)
                     <div class="card mb-4">
                         <div class="card-header">
                             <!-- 掲示板のタイトル -->
-                            <h5 class="card-title mt-1">{{ $post->title }}</h5>
+                            <h5 class="card-title mt-1"><a class="text-decoration-none"
+                                    href="{{ route('post.show', ['post' => $post->id]) }}">
+                                    {{ $post->title }}
+                                    @if ($post->image)
+                                        <span class="text-primary">【画像あり】</span>
+                                    @endif
+                                </a></h5>
                             <!-- 投稿日時 -->
                             <small class="text-muted">投稿日時: {{ $post->created_at . ' @' . $post->user->name }}</small>
                         </div>
                         <div class="card-body">
                             <!-- 掲示板の内容 -->
                             <p class="card-text">{{ $post->content }}</p>
+                            <small class="text-muted">返信数:
+                                {{ isset($post->comments) ? "{$post->comments->count()} 件" : '0件' }}</small>
                         </div>
                     </div>
                 @empty
                     <tr>
-                        <td colspan="12">データがありません</td>
+                        <td colspan="12">過去にした投稿がありません</td>
                     </tr>
                 @endforelse
             </div>
-            {{-- ここは後でちゃんとする --}}
-            <div class="col-md-4">
-                @for ($i = 0; $i < 10; $i++)
-                    <div class="card mb-4">
-                        <div class="card-header">{{ __('コメント') }}</div>
-
+            {{-- 過去にしたコメントとコメント先の投稿 --}}
+            <div class="col-lg-4">
+                @forelse ($comments as $comment)
+                {{-- 過去にしたコメント --}}
+                    <div class="card">
                         <div class="card-body">
-                            <ul style="padding-left: 0; list-style: none;">
-                                <li>うおおおおおおおおおおおおおおお</li>
-                            </ul>
+                            <div class="card-text">
+                                <h5 class="card-title mt-1">{{ $comment->content }}</h5>
+                                <small class="text-muted">コメント日時:
+                                    {{ $comment->created_at . ' @' . $comment->user->name }}</small>
+                            </div>
                         </div>
                     </div>
-                @endfor
+                    <span class="text-muted d-flex justify-content-center">|</span>
+                    {{-- コメント先の投稿 --}}
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <!-- コメント先の投稿のタイトル -->
+                            <h5 class="card-title mt-1"><a class="text-decoration-none"
+                                    href="{{ route('post.show', ['post' => $comment->post_id]) }}">
+                                    {{ $comment->post->title }}
+                                    @if ($comment->post->image)
+                                        <span class="text-primary">【画像あり】</span>
+                                    @endif
+                                </a></h5>
+                            <!-- 投稿日時 -->
+                            <small class="text-muted">投稿日時: {{ $comment->post->created_at . ' @' . $comment->post->user->name }}</small>
+                        </div>
+                        <div class="card-body">
+                            <!-- コメント先の投稿の内容 -->
+                            <p class="card-text">{{ $comment->post->content }}</p>
+                            <small class="text-muted">返信数:
+                                {{ isset($comment->post->comments) ? "{$comment->post->comments->count()} 件" : '0件' }}</small>
+                        </div>
+                    </div>
+                @empty
+                    <tr>
+                        <td colspan="12">過去にしたコメントがありません</td>
+                    </tr>
+                @endforelse
             </div>
+
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">{{ __('ユーザー情報の編集') }}</div>
