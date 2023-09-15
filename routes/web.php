@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // 投稿
     Route::resource('post', PostController::class);
+
+    // コメント
+    Route::resource('comment', CommentController::class);
 });

@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-lg-auto">
-                    @forelse ($comments as $comment)
+                    @foreach ($comments as $comment)
                         {{-- コメント --}}
                         <span class="text-muted d-flex justify-content-center">|</span>
                         <div class="card">
@@ -57,10 +57,11 @@
 
                                     @if (Auth::user()->id === $comment->user_id)
                                         <span class="">
-                                            <a href="{{ route('post.edit', ['post' => $post->id]) }}" role="button"
-                                                class="btn btn-outline-secondary me-3">編集</a>
+                                            <a href="{{ route('comment.edit', ['comment' => $comment->id]) }}"
+                                                role="button" class="btn btn-outline-secondary me-3">編集</a>
                                         </span>
-                                        <form method="POST" action="{{ route('post.destroy', ['post' => $post->id]) }}"
+                                        <form method="POST"
+                                            action="{{ route('comment.destroy', ['comment' => $comment->id]) }}"
                                             class="me-2" onsubmit="return confirm('本当に削除しますか？');">
                                             @csrf
                                             @method('DELETE')
@@ -70,11 +71,24 @@
                                 </div>
                             </div>
                         </div>
-                    @empty
-                        <tr>
-                            <td colspan="12">コメントはまだありません</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
+                </div>
+                {{-- コメントの新規投稿 --}}
+                {{-- <span class="text-muted d-flex justify-content-center">|</span> --}}
+                <div class="card mt-3">
+                    <div class="card-header">コメントする</div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('comment.store') }}" enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="form-group mt-3">
+                                <label for="content">内容</label>
+                                <textarea name="content" id="content" class="form-control" rows="10">{{ isset($post) ? $post->content : '' }}</textarea>
+                            </div>
+                            <input type="hidden" name="post_id" value={{ $post->id }}>
+                            <button type="submit" class="btn btn-primary mt-3">コメントする</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
