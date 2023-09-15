@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-10">
                 <div class="card mt-3">
-                    <div class="card-header">新規投稿</div>
+                    <div class="card-header">{{ isset($post) ? '投稿編集' : '新規投稿' }}</div>
                     <div class="card-body">
                         <form method="POST"
                             action="{{ isset($post) ? route('post.update', ['post' => $post->id]) : route('post.store') }}"
@@ -26,7 +26,7 @@
                                 <textarea name="content" id="content" class="form-control" rows="15">{{ isset($post) ? $post->content : '' }}</textarea>
                             </div>
 
-                            @if (!isset($post->image))
+                            @if (!isset($post))
                                 <div class="form-group mt-3">
                                     <label for="image">画像</label>
                                     <input type="file" name="image" id="image" class="form-control-file">
