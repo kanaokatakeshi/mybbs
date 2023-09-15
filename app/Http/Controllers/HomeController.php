@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,16 +33,16 @@ class HomeController extends Controller
 
     public function edit(Request $request)
     {
-        $query = Post::query();
+        // ログインユーザーのIDを取得
+        $userId = Auth::id();
 
-        // dd($request->user());
-        if ($request->user()) {
-            $query->where('user_id', $request->user()->id);
-        }
+        // ユーザーが投稿した投稿を取得
+        $posts = Post::where('user_id', $userId)->latest()->get();
 
-        $posts = $query->latest()->get();
+        // ユーザーが投稿したコメントを取得
+        $comments = Comment::where('user_id', $userId)->latest()->get();
 
-        return view('user.profile', compact('posts'));
+        return view('user.profile', compact('posts', 'comments'));
     }
 
     public function update(Request $request)

@@ -29,7 +29,7 @@
                     </div>
                 @empty
                     <tr>
-                        <td colspan="12">データがありません</td>
+                        <td colspan="12">投稿がありません</td>
                     </tr>
                 @endforelse
             </div>
