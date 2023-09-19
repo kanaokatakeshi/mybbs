@@ -44,8 +44,8 @@ class CommentNotification extends Notification
     {
         return (new MailMessage)
             ->line('投稿に新しいコメントが追加されました。')
-            ->line('投稿のタイトル: ' . $this->comment->content)
-            ->line('コメント内容: ' . $this->comment->title)
+            ->line('投稿のタイトル: ' . $this->comment->post->title)
+            ->line('コメント内容: ' . $this->comment->content)
             ->action('投稿を見る', route('post.show', ['post' => $this->comment->post]))
             ->subject('新しいコメントが投稿されました');
     }
