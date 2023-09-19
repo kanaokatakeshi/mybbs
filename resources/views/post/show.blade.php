@@ -83,7 +83,7 @@
 
                             <div class="form-group mt-3">
                                 <label for="content">内容</label>
-                                <textarea name="content" id="content" class="form-control" rows="10">{{ isset($post) ? $post->content : '' }}</textarea>
+                                <textarea name="content" id="content" class="form-control" rows="10" required></textarea>
                             </div>
                             <input type="hidden" name="post_id" value={{ $post->id }}>
                             <button type="submit" class="btn btn-primary mt-3">コメントする</button>

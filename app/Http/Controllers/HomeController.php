@@ -52,6 +52,7 @@ class HomeController extends Controller
             $user = Auth()->user();
             $user->update($request->all());
             \DB::commit();
+            return redirect()->route('profile.edit')->with('success', '更新しました');
         } catch (\Exception $e) {
             report($e);
             \DB::rollback();

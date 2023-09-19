@@ -69,9 +69,24 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(UpdateCommentRequest $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $validatedData = $request->validated();
+
+            $comment = Comment::findOrFail($id);
+            $comment->update([
+                'content' => $validatedData['content'],
+            ]);
+
+            DB::commit();
+            return redirect()->route('comment.show', ['comment' => $comment->id])->with('success', '更新しました。');
+        } catch (\Exception $e) {
+            report($e);
+            \DB::rollback();
+            return redirect()->back()->with('fail', '編集に失敗しました');
+        }
     }
 
     /**
