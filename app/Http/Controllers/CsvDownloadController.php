@@ -14,7 +14,7 @@ class CsvDownloadController extends Controller
         $stream = fopen('php://temp', 'w');   //ストリームを書き込みモードで開く
         fwrite($stream, pack('C*', 0xEF, 0xBB, 0xBF)); //BOM付きutf-8にする
 
-        $arr = array('name', 'title', 'content');           //CSVファイルのカラム（列）名の指定
+        $arr = array('name', 'title', 'content');   //CSVファイルのカラム（列）名の指定
 
         fputcsv($stream, $arr);               //1行目にカラム（列）名のみを書き込む（繰り返し処理には入れない）
         foreach ($posts as $post) {

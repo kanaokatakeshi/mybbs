@@ -40,8 +40,6 @@ class PostController extends Controller
         try {
             $user = Auth::user(); // ユーザーを認証済みのユーザーから取得
 
-            $data = $request->validated(); // バリデーション済みのデータを取得
-
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();

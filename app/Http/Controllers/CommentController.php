@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
+use App\Notifications\CommentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class CommentController extends Controller
 {
@@ -40,6 +42,13 @@ class CommentController extends Controller
             $data = $request->all(); // バリデーション済みのデータを取得
 
             $comment = $user->comments()->create($data);
+            if ($comment) {
+                // コメントが保存されたユーザー（投稿者）を取得
+                $postAuthor = $comment->post->user;
+
+                // メール通知を送信
+                Notification::send($postAuthor, new CommentNotification($comment));
+            }
             DB::commit();
 
             return redirect()->route('post.show', ['post' => $comment->post_id])->with('success', '投稿しました。');
