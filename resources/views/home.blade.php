@@ -3,7 +3,16 @@
 @section('content')
     <div class="container">
         @if ($posts->total() > 0)
-            {{ $posts->appends(request()->query())->links() }}
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        {{ $posts->appends(request()->query())->links() }}
+                        <a href="{{ route('downloadCsv') }}" class="btn btn-light border btn-sm px-3">
+                            投稿CSVダウンロード
+                        </a>
+                    </div>
+                </div>
+            </div>
         @endif
         <div class="row">
             <div class="col-lg-10">
@@ -24,7 +33,8 @@
                         <div class="card-body">
                             <!-- 掲示板の内容 -->
                             <p class="card-text">{{ $post->content }}</p>
-                            <small class="text-muted">返信数: {{ isset($post->comments) ? "{$post->comments->count()} 件" : '0件' }}</small>
+                            <small class="text-muted">返信数:
+                                {{ isset($post->comments) ? "{$post->comments->count()} 件" : '0件' }}</small>
                         </div>
                     </div>
                 @empty

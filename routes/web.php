@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CsvDownloadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,4 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // コメント
     Route::resource('comment', CommentController::class);
+
+    // csv
+    Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv'])->name('downloadCsv');
 });
