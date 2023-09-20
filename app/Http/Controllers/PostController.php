@@ -39,6 +39,7 @@ class PostController extends Controller
 
         try {
             $user = Auth::user(); // ユーザーを認証済みのユーザーから取得
+            $data = $request->all();
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
@@ -84,12 +85,12 @@ class PostController extends Controller
     {
         DB::beginTransaction();
         try {
-            $validatedData = $request->validated();
+            $data = $request->all();
 
             $post = Post::findOrFail($id);
             $post->update([
-                'title' => $validatedData['title'],
-                'content' => $validatedData['content'],
+                'title' => $data['title'],
+                'content' => $data['content'],
             ]);
 
             DB::commit();

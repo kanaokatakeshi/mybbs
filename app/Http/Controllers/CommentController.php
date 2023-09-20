@@ -80,13 +80,14 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, $id)
     {
+        dd(3);
         DB::beginTransaction();
         try {
-            $validatedData = $request->validated();
+            $data = $request->all();
 
             $comment = Comment::findOrFail($id);
             $comment->update([
-                'content' => $validatedData['content'],
+                'content' => $data['content'],
             ]);
 
             DB::commit();

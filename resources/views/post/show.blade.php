@@ -24,10 +24,8 @@
                             </span> --}}
 
                             @if (Auth::user()->id === $post->user_id)
-                                <span class="">
-                                    <a href="{{ route('post.edit', ['post' => $post->id]) }}" role="button"
-                                        class="btn btn-outline-secondary me-3">編集</a>
-                                </span>
+                                <a href="{{ route('post.edit', ['post' => $post->id]) }}" role="button"
+                                    class="btn btn-outline-secondary me-3">編集</a>
                                 <form method="POST" action="{{ route('post.destroy', ['post' => $post->id]) }}"
                                     class="me-2" onsubmit="return confirm('本当に削除しますか？');">
                                     @csrf
@@ -39,35 +37,49 @@
                     </div>
                 </div>
                 <div class="col-lg-auto">
-                    @foreach ($comments as $comment)
+                    @foreach ($comments as $index => $comment)
                         {{-- コメント --}}
                         <span class="text-muted d-flex justify-content-center">|</span>
                         <div class="card">
                             <div class="card-body">
                                 <div class="card-text">
-                                    <h5 class="card-title mt-1">{{ $comment->content }}</h5>
+                                    <div class="d-flex justify-content-start">
+                                        <div id="js-edit-form_{{ $index }}" class="form-group">
+                                            <label for="content"></label>
+                                            <textarea class="form-control" name="" id="" cols="125" rows="3" required>{{ $comment->content }}</textarea>
+                                        </div>
+                                    </div>
+                                    <h5 id="" class="card-title mt-1">
+                                        {{ $comment->content }}</h5>
                                     <small class="text-muted">コメント日時:
                                         {{ $comment->created_at . ' @' . $comment->user->name }}</small>
                                 </div>
                                 {{-- コメントの編集ボタンと削除ボタン --}}
-                                <div class="d-flex justify-content-end">
-                                    {{-- <span class="">
-                                        <a href="{{ route('home') }}" role="button" class="btn btn-outline-secondary me-2">戻る</a>
-                                    </span> --}}
-
-                                    @if (Auth::user()->id === $comment->user_id)
-                                        <span class="">
-                                            <a href="{{ route('comment.edit', ['comment' => $comment->id]) }}"
-                                                role="button" class="btn btn-outline-secondary me-3">編集</a>
-                                        </span>
-                                        <form method="POST"
-                                            action="{{ route('comment.destroy', ['comment' => $comment->id]) }}"
-                                            class="me-2" onsubmit="return confirm('本当に削除しますか？');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger">削除</button>
-                                        </form>
-                                    @endif
+                                <div class="row">
+                                    <div class="d-flex justify-content-between">
+                                        {{-- 編集ボタンを押したら送信ボタンが出てくる --}}
+                                        <div id="js-sending-button_{{ $index }}" class="">
+                                            <form method="POST"
+                                                action="{{ route('comment.update', ['comment' => $comment->id]) }}">
+                                                <a href="" role="button" class="btn btn-outline-primary">変更</a>
+                                            </form>
+                                        </div>
+                                        @if (Auth::user()->id === $comment->user_id)
+                                            <div class="d-flex">
+                                                <div id="js-edit-button" role="button"
+                                                    class="btn btn-outline-secondary me-3"
+                                                    onclick="showForm({{ $index }})">編集
+                                                </div>
+                                                <form method="POST"
+                                                    action="{{ route('comment.destroy', ['comment' => $comment->id]) }}"
+                                                    class="me-2" onsubmit="return confirm('本当に削除しますか？');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-outline-danger">削除</button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +92,6 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('comment.store') }}" enctype="multipart/form-data">
                             @csrf
-
                             <div class="form-group mt-3">
                                 <label for="content">内容</label>
                                 <textarea name="content" id="content" class="form-control" rows="10" required></textarea>
@@ -93,4 +104,32 @@
             </div>
         </div>
     </div>
+    @php
+        $json_array = json_encode($comments);
+    @endphp
+    <script>
+        let comments = JSON.parse('<?php echo $json_array; ?>');
+        console.log(comments);
+        comments.forEach((comment, index) => {
+            const js_edit_form = document.getElementById('js-edit-form_' + index);
+            const js_sending_button = document.getElementById('js-sending-button_' + index);
+            js_edit_form.style.display = "none";
+            js_sending_button.style.display = "none";
+        });
+
+        function showForm(index) {
+            // console.log(aaa);
+            const js_edit_form = document.getElementById('js-edit-form_' + index);
+            const js_sending_button = document.getElementById('js-sending-button_' + index);
+
+            if (js_edit_form.style.display === "none") {
+                js_edit_form.style.display = "block";
+                js_sending_button.style.display = "block";
+            } else {
+                js_edit_form.style.display = "none";
+                js_sending_button.style.display = "none";
+            }
+
+        };
+    </script>
 @endsection
