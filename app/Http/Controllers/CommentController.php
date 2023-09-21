@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
 use App\Notifications\CommentNotification;
 use Illuminate\Http\Request;
@@ -80,7 +81,7 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, $id)
     {
-        dd(3);
+        // dd($request->all());
         DB::beginTransaction();
         try {
             $data = $request->all();
@@ -91,7 +92,7 @@ class CommentController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('comment.show', ['comment' => $comment->id])->with('success', '更新しました。');
+            return redirect()->route('post.show', ['post' => $comment->post->id])->with('success', '更新しました。');
         } catch (\Exception $e) {
             report($e);
             \DB::rollback();

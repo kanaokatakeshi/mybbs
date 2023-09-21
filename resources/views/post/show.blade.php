@@ -44,12 +44,21 @@
                             <div class="card-body">
                                 <div class="card-text">
                                     <div class="d-flex justify-content-start">
-                                        <div id="js-edit-form_{{ $index }}" class="form-group">
-                                            <label for="content"></label>
-                                            <textarea class="form-control" name="" id="" cols="125" rows="3" required>{{ $comment->content }}</textarea>
-                                        </div>
+                                        {{-- 編集ボタン押下時に出る入力フォーム --}}
+                                        <form id="js-edit-form_{{ $index }}" class="form-group" method="POST"
+                                            action="{{ route('comment.update', ['comment' => $comment->id]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <label for="content">編集</label>
+                                            <textarea class="form-control" name="content" id="content" cols="125" rows="3" required>{{ $comment->content }}</textarea>
+                                            <div id="js-sending-button_{{ $index }}" class="">
+                                                {{-- <input type="hidden" name="post_id" value={{ $post->id }}> --}}
+                                                <button type="submit" value=""
+                                                    class="btn btn-outline-primary">変更</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <h5 id="" class="card-title mt-1">
+                                    <h5 id="js-comment-content_{{ $index }}" class="card-title mt-1">
                                         {{ $comment->content }}</h5>
                                     <small class="text-muted">コメント日時:
                                         {{ $comment->created_at . ' @' . $comment->user->name }}</small>
@@ -57,13 +66,7 @@
                                 {{-- コメントの編集ボタンと削除ボタン --}}
                                 <div class="row">
                                     <div class="d-flex justify-content-between">
-                                        {{-- 編集ボタンを押したら送信ボタンが出てくる --}}
-                                        <div id="js-sending-button_{{ $index }}" class="">
-                                            <form method="POST"
-                                                action="{{ route('comment.update', ['comment' => $comment->id]) }}">
-                                                <a href="" role="button" class="btn btn-outline-primary">変更</a>
-                                            </form>
-                                        </div>
+                                        {{-- 編集ボタンを押したら送信ボタンとフォームが出てくる --}}
                                         @if (Auth::user()->id === $comment->user_id)
                                             <div class="d-flex">
                                                 <div id="js-edit-button" role="button"
@@ -121,13 +124,16 @@
             // console.log(aaa);
             const js_edit_form = document.getElementById('js-edit-form_' + index);
             const js_sending_button = document.getElementById('js-sending-button_' + index);
+            const js_comment_content = document.getElementById('js-comment-content_' + index);
 
             if (js_edit_form.style.display === "none") {
                 js_edit_form.style.display = "block";
                 js_sending_button.style.display = "block";
+                js_comment_content.style.display = "none";
             } else {
                 js_edit_form.style.display = "none";
                 js_sending_button.style.display = "none";
+                js_comment_content.style.display = "block";
             }
 
         };
