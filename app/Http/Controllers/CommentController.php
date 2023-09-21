@@ -41,8 +41,9 @@ class CommentController extends Controller
             $user = Auth::user(); // ユーザーを認証済みのユーザーから取得
 
             $data = $request->all(); // バリデーション済みのデータを取得
-
             $comment = $user->comments()->create($data);
+            DB::commit();
+            $request->session()->regenerateToken();
             if ($comment) {
                 // コメントが保存されたユーザー（投稿者）を取得
                 $postAuthor = $comment->post->user;
@@ -50,7 +51,6 @@ class CommentController extends Controller
                 // メール通知を送信
                 Notification::send($postAuthor, new CommentNotification($comment));
             }
-            DB::commit();
 
             return redirect()->route('post.show', ['post' => $comment->post_id])->with('success', '投稿しました。');
         } catch (Exception $e) {
@@ -90,7 +90,6 @@ class CommentController extends Controller
             $comment->update([
                 'content' => $data['content'],
             ]);
-
             DB::commit();
             return redirect()->route('post.show', ['post' => $comment->post->id])->with('success', '更新しました。');
         } catch (\Exception $e) {

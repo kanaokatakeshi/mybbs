@@ -49,6 +49,7 @@ class PostController extends Controller
             }
 
             $post = $user->posts()->create($data);
+            $request->session()->regenerateToken();
             DB::commit();
 
             return redirect()->route('home')->with('success', '投稿しました。');
@@ -92,7 +93,6 @@ class PostController extends Controller
                 'title' => $data['title'],
                 'content' => $data['content'],
             ]);
-
             DB::commit();
             return redirect()->route('post.show', ['post' => $post->id])->with('success', '更新しました。');
         } catch (\Exception $e) {
