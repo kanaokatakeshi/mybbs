@@ -36,7 +36,7 @@
             {{-- 過去にしたコメントとコメント先の投稿 --}}
             <div class="col-lg-4">
                 @forelse ($comments as $comment)
-                {{-- 過去にしたコメント --}}
+                    {{-- 過去にしたコメント --}}
                     <div class="card">
                         <div class="card-body">
                             <div class="card-text">
@@ -59,7 +59,8 @@
                                     @endif
                                 </a></h5>
                             <!-- 投稿日時 -->
-                            <small class="text-muted">投稿日時: {{ $comment->post->created_at . ' @' . $comment->post->user->name }}</small>
+                            <small class="text-muted">投稿日時:
+                                {{ $comment->post->created_at . ' @' . $comment->post->user->name }}</small>
                         </div>
                         <div class="card-body">
                             <!-- コメント先の投稿の内容 -->
@@ -125,13 +126,13 @@
                                 <div class="col-md-6">
                                     <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="new-password">
+                                        minlength="8" autocomplete="new-password">
 
-                                    @error('password')
+                                    {{-- @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                    @enderror
+                                    @enderror --}}
                                 </div>
                             </div>
 
