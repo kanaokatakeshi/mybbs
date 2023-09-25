@@ -107,6 +107,7 @@
             </div>
         </div>
     </div>
+    console.log(comments);
     @php
         $json_array = json_encode($comments);
     @endphp
