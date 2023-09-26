@@ -35,7 +35,7 @@
             </div>
             {{-- 過去にしたコメントとコメント先の投稿 --}}
             <div class="col-lg-4">
-                @forelse ($comments as $index => $comment)
+                @forelse ($comments as $comment)
                     {{-- 過去にしたコメント --}}
                     <div class="card">
                         <div class="card-body">
@@ -159,18 +159,4 @@
             </div>
         </div>
     </div>
-    <button id="button" class="btn btn-primary">haha</button>
-    <script>
-        const url = '/api/my-comments';
-
-        const getMyComments = async () => {
-            const res = await fetch(url);
-            const posts = await res.json();
-            console.log(posts);
-        }
-
-        document.querySelector('#button').addEventListener('click', (e) => {
-            getMyComments();
-        })
-    </script>
 @endsection

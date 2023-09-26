@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\CommentController as ApiCommentController;
-use App\Http\Controllers\Api\PostController as ApiPostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CsvDownloadController;
 use App\Http\Controllers\HomeController;
@@ -44,10 +42,4 @@ Route::group(['middleware' => ['auth']], function () {
 
     // csv
     Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv'])->name('downloadCsv');
-
-    // api
-    Route::prefix('api')->group(function () {
-        // Route::get('/my-commented-posts', [ApiPostController::class, 'getMyCommentedPosts'])->name('getMyCommentedPosts');
-        Route::get('/my-comments', [ApiCommentController::class, 'myComments'])->name('myComments');
-    });
 });
