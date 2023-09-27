@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PostController as ApiPostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CsvDownloadController;
 use App\Http\Controllers\HomeController;
@@ -42,4 +43,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     // csv
     Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv'])->name('downloadCsv');
+
+    // api
+    Route::prefix('api')->group(function () {
+        Route::get('/post/{post_id}', [ApiPostController::class, 'myCommentedPost'])->name('myCommentedPost');
+    });
 });

@@ -37,7 +37,8 @@
             <div class="col-lg-4">
                 @forelse ($comments as $comment)
                     {{-- 過去にしたコメント --}}
-                    <div class="card">
+                    <div class="card mb-3" id="my-comment" value="{{ $comment->post_id }}"
+                        onclick="myCommentedPost({{ $comment->post_id }})">
                         <div class="card-body">
                             <div class="card-text">
                                 <h5 class="card-title mt-1">{{ $comment->content }}</h5>
@@ -46,27 +47,32 @@
                             </div>
                         </div>
                     </div>
-                    <span class="text-muted d-flex justify-content-center">|</span>
                     {{-- コメント先の投稿 --}}
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <!-- コメント先の投稿のタイトル -->
-                            <h5 class="card-title mt-1"><a class="text-decoration-none"
-                                    href="{{ route('post.show', ['post' => $comment->post_id]) }}">
-                                    {{ $comment->post->title }}
-                                    @if ($comment->post->image)
-                                        <span class="text-primary">【画像あり】</span>
-                                    @endif
-                                </a></h5>
-                            <!-- 投稿日時 -->
-                            <small class="text-muted">投稿日時:
-                                {{ $comment->post->created_at . ' @' . $comment->post->user->name }}</small>
-                        </div>
-                        <div class="card-body">
-                            <!-- コメント先の投稿の内容 -->
-                            <p class="card-text">{{ $comment->post->content }}</p>
-                            <small class="text-muted">返信数:
-                                {{ isset($comment->post->comments) ? "{$comment->post->comments->count()} 件" : '0件' }}</small>
+                    <div id="my-commented-post" style="display: block;">
+                        <span class="text-muted d-flex justify-content-center">|</span>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <!-- コメント先の投稿のタイトル -->
+                                <h5 class="card-title mt-1"><a class="text-decoration-none" {{-- href="{{ route('post.show', ['post' => $comment->post_id]) }}" --}}>
+                                        {{-- {{ $comment->post->title }} --}}
+                                        @if ($comment->post->image)
+                                            <span class="text-primary">【画像あり】</span>
+                                        @endif
+                                    </a></h5>
+                                <!-- 投稿日時 -->
+                                <small class="text-muted">投稿日時:
+                                    {{-- {{ $comment->post->created_at . ' @' . $comment->post->user->name }} --}}
+                                </small>
+                            </div>
+                            <div class="card-body">
+                                <!-- コメント先の投稿の内容 -->
+                                <p class="card-text">
+                                    {{-- {{ $comment->post->content }} --}}
+                                </p>
+                                <small class="text-muted">返信数:
+                                    {{-- {{ isset($comment->post->comments) ? "{$comment->post->comments->count()} 件" : '0件' }} --}}
+                                </small>
+                            </div>
                         </div>
                     </div>
                 @empty
@@ -159,4 +165,15 @@
             </div>
         </div>
     </div>
+    <script>
+        async function myCommentedPost(post_id) {
+            const url = '/api/post/' + post_id;
+            const res = await fetch(url);
+            const json = await res.json();
+
+            const my_commented_post = document.querySelector('#my-commented-post');
+            my_commented_post.style.display = 'block';
+            console.log(json);
+        }
+    </script>
 @endsection
