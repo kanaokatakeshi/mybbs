@@ -34,13 +34,14 @@ class HomeController extends Controller
     public function edit(Request $request)
     {
         // ログインユーザーのIDを取得
-        $userId = Auth::id();
+        $user_id = Auth::id();
 
         // ユーザーが投稿した投稿を取得
-        $posts = Post::where('user_id', $userId)->latest()->get();
+        $posts = Post::where('user_id', $user_id)->latest()->get();
 
         // ユーザーが投稿したコメントを取得
-        $comments = Comment::where('user_id', $userId)->latest()->get();
+        $comments = Comment::where('user_id', $user_id)->with('post')->latest()->get()->groupBy('post_id');
+        // $comments = Comment::where('user_id', $user_id)->latest()->get()->groupBy('post_id');
 
         return view('user.profile', compact('posts', 'comments'));
     }
