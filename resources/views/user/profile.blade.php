@@ -37,12 +37,10 @@
             <div class="col-lg-4">
                 @forelse ($comments as $index => $commentGroup)
 
-                {{ dd($comments) }}
-
                     @foreach ($commentGroup as $comment)
                         <!-- 過去にしたコメント -->
-                        <div class="card mb-3" id="" value="{{ $comment->post_id }}"
-                            onclick="showMyCommentedPost({{ $comment->post_id }})">
+                        <div class="card mb-3" id="" value="{{ $comment->id }}"
+                            onclick="showMyCommentedPost({{ $comment->id }})">
                             <div class="card-body">
                                 <div class="card-text">
                                     <h5 class="card-title mt-1">{{ $comment->content }}</h5>
@@ -51,39 +49,40 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-
-                    <!-- コメント先の投稿 -->
-                    <div id="commented-post_{{ $index }}" style="display: block;">
-                        <span class="text-muted d-flex justify-content-center">|</span>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <!-- コメント先の投稿のタイトル -->
-                                <h5 id="" class="card-title mt-1"><a id="commented-post-link"
-                                        class="text-decoration-none"
-                                        href="{{ route('post.show', ['post' => $comment->post_id]) }}">
-                                        {{ $comment->post->title }}
-                                        @if ($comment->post->image)
-                                            <span class="text-primary">【画像あり】</span>
-                                        @endif
-                                    </a></h5>
-                                <!-- 投稿日時 -->
-                                <small id="" class="text-muted">投稿日時:
-                                    {{-- {{ $comment->post->created_at . ' @' . $comment->post->user->name }} --}}
-                                    {{ "{$comment->post->created_at} @{$comment->post->user->name}" }}
-                                </small>
-                            </div>
-                            <div class="card-body">
-                                <!-- コメント先の投稿の本文 -->
-                                <p id="" class="card-text">
-                                    {{ $comment->post->content }}
-                                </p>
-                                <small id="" class="text-muted">返信数:
-                                    {{ isset($comment->post->comments) ? "{$comment->post->comments->count()} 件" : '0件' }}
-                                </small>
+                        <!-- コメント先の投稿 -->
+                        <div id="commented-post_{{ $comment->id }}" style="display: block;">
+                            <span class="text-muted d-flex justify-content-center">|</span>
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <!-- コメント先の投稿のタイトル -->
+                                    <h5 id="" class="card-title mt-1"><a id="commented-post-link"
+                                            class="text-decoration-none"
+                                            href="{{ route('post.show', ['post' => $comment->post_id]) }}">
+                                            {{ $comment->post->title }}
+                                            @if ($comment->post->image)
+                                                <span class="text-primary">【画像あり】</span>
+                                            @endif
+                                        </a></h5>
+                                    <!-- 投稿日時 -->
+                                    <small id="" class="text-muted">投稿日時:
+                                        {{-- {{ $comment->post->created_at . ' @' . $comment->post->user->name }} --}}
+                                        {{ "{$comment->post->created_at} @{$comment->post->user->name}" }}
+                                    </small>
+                                </div>
+                                <div class="card-body">
+                                    <!-- コメント先の投稿の本文 -->
+                                    <p id="" class="card-text">
+                                        {{ $comment->post->content }}
+                                    </p>
+                                    <small id="" class="text-muted">返信数:
+                                        {{ isset($comment->post->comments) ? "{$comment->post->comments->count()} 件" : '0件' }}
+                                    </small>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
+
+
                 @empty
                     <tr>
                         <td colspan="12">過去にしたコメントがありません</td>

@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -40,8 +41,7 @@ class HomeController extends Controller
         $posts = Post::where('user_id', $user_id)->latest()->get();
 
         // ユーザーが投稿したコメントを取得
-        $comments = Comment::where('user_id', $user_id)->with('post')->latest()->get()->groupBy('post_id');
-        // $comments = Comment::where('user_id', $user_id)->latest()->get()->groupBy('post_id');
+        $comments = Comment::where('user_id', $user_id)->latest()->get()->groupBy('post_id');
 
         return view('user.profile', compact('posts', 'comments'));
     }
