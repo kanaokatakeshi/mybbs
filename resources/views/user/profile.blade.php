@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <!-- コメント先の投稿 -->
-                        <div id="commented-post_{{ $comment->id }}" style="display: block;">
+                        <div id="commented-post_{{ $comment->id }}" style="display: none;">
                             <span class="text-muted d-flex justify-content-center">|</span>
                             <div class="card mb-4">
                                 <div class="card-header">
@@ -174,7 +174,7 @@
         </div>
     </div>
     <script>
-        async function showMyCommentedPost(post_id, index) {
+        async function showMyCommentedPost(post_id) {
 
             const commented_post = document.querySelector(`#commented-post_${post_id}`);
 
